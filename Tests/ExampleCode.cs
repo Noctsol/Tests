@@ -7,10 +7,11 @@ using System.IO;
 
 namespace Tests
 {
-  class ExampleCode
+  class ExampleCode //quick reminders of syntax and commonly used methods
   {
     static void Main(string[] args)
-		{//print function cause console.writeline is fucking aids
+		{
+      //print function cause console.writeline is fucking aids
       void print(object arg)
       {
         Console.WriteLine(arg);
@@ -62,14 +63,18 @@ namespace Tests
      
 
       print("------------------------------------");
-      // much easier if list contains all same item types
+      // much easier if list contains all same item types - no typecasting considerations
       List<List<string>> lst2 = new List<List<string>> {lst, lst, lst};
       foreach (List<string> i in lst2) {
         foreach(string word in i){
           print(word);
         }
-
       }
+      print("------------------------------------");
+      // numerical for loop using index to access array items
+      int count = (lst.Count);  //theres 
+      for (int n = 0; n < count; n++){ 
+        print(lst[n]); }
     }
   }
 }
