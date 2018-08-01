@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace Tests
 {
   class ExampleCode //quick reminders of syntax and commonly used methods
   {
     static void Main(string[] args)
-		{
+
+     /*{
       //print function cause console.writeline is fucking aids
       void print(object arg)
       {
@@ -75,6 +77,84 @@ namespace Tests
       int count = (lst.Count);  //theres 
       for (int n = 0; n < count; n++){ 
         print(lst[n]); }
+      */
+
+      {
+        void findData(Dictionary<string, Object> dict)
+        {
+        
+        foreach (KeyValuePair<string, Object> item in dict)
+        {
+          //Console.WriteLine(item.Value.GetType().ToString() +"   "+item.Key+ "      "+ dict[item.Key]);
+        
+          if (item.Value.GetType() != typeof(Newtonsoft.Json.Linq.JObject)) {
+            continue;
+           }
+          Console.WriteLine(item.Value.GetType().ToString() + "   " + item.Key + "      " + dict[item.Key]);
+          Dictionary<string, Object> list = JsonConvert.DeserializeObject<Dictionary<string, Object>>(item.Value.ToString());
+          Console.WriteLine("--------------------");
+          findData(list); 
+        }
+        }
+
+      Console.WriteLine("$$$$$$$$$$ ");
+      string response;
+          response = System.IO.File.ReadAllText(@"C:\Users\kbui\Desktop\champList.txt");
+          List<champion> Champion = new List<champion>();
+          //Dictionary<string, Dictionary<string, Dictionary<string, string>>> sorted = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, Dictionary<string, string>>>>(response);
+          Dictionary<string, Object> jsonObj = JsonConvert.DeserializeObject<Dictionary<string, Object>>(response);
+          findData(jsonObj);
+      Console.WriteLine(jsonObj.GetType());
+
+
+          foreach (KeyValuePair<string, Object> item in jsonObj)
+          {
+            if (item.Key == "data")
+            {
+
+              Console.WriteLine("jello");
+              Dictionary<string, Object> champions = JsonConvert.DeserializeObject<Dictionary<string, Object>>(item.Value.ToString());
+              foreach (KeyValuePair<string, Object> champList in champions)
+              {
+                string champId = "";
+                string champName = "";
+
+                Dictionary<string, Object> champInfo = JsonConvert.DeserializeObject<Dictionary<string, Object>>(champList.Value.ToString());
+                foreach (KeyValuePair<string, Object> info in champInfo)
+                {
+                  if (info.Key == "id")
+                  {
+                    champId = info.Value.ToString();
+
+                  }
+
+                  if (info.Key == "name")
+                  {
+                    champName = info.Value.ToString();
+                  }
+
+                }
+
+                champion tempChamp = new champion();
+                tempChamp.id = champId;
+                tempChamp.name = champName;
+                Champion.Add(tempChamp);
+
+              }
+
+
+            }
+            /*foreach (champion obj in Champion)
+            {
+              Console.WriteLine(obj.id + obj.name);
+
+            }*/
+
+          }
+
+
+        }
+      }
     }
-  }
-}
+  
+
