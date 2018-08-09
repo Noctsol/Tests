@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using Newtonsoft.Json;
 using System.Data.SqlClient;
+using System.Reflection;
 
 namespace Tests
 {
@@ -13,35 +14,39 @@ namespace Tests
   {
     static void Main(string[] args)
     {
-      Test tst = new Test();
-      tst.exampleCode();
-      string sql = "USE OgIFM SELECT *FROM Invoicelineitem";
-      string connectionString = "Data Source=FSPHX069;User ID=Noctsol;Password=100Sqltest!";
-      SqlConnection cnn = new SqlConnection(connectionString);
-      try
+      Dictionary<string, string> D = new Dictionary<string, string> { { "assets", "Hello" }, { "employees", "World" } };
+
+      List<Riot> lRiot = new List<Riot>();
+      Riot shit = new Riot();
+
+      shit.assets = "hbfgigbb";
+      shit.employees = "hello";
+      Console.WriteLine(shit.assets);
+      Console.WriteLine(D["assets"]);
+      PropertyInfo[] properties = typeof(Riot).GetProperties();
+
+      foreach (KeyValuePair<string, string> item in D)
       {
-        cnn.Open();
-        SqlCommand command = new SqlCommand(sql, cnn);
-        SqlDataReader dataReader = command.ExecuteReader();
-        int n = dataReader.FieldCount;
-        while (dataReader.Read())
+        Console.WriteLine(1);
+        foreach (PropertyInfo c in properties)
         {
-          string output = "";
-          for (int i = 0; i < n; i++)
+          Riot temp = new Riot();
+          string nme = c.Name;
+          Console.WriteLine(nme + "------------------");
+          if (item.Key == nme)
           {
-            string word = Convert.ToString(dataReader[i]);
-            if ( word == ""){ word = "NULL"; }
-            output += word + "  ";
+            Console.WriteLine(item.Key + "FOUND YOU COCKSUKE");
+            var tempType = typeof(Riot);
+            tempType.GetProperty(nme).SetValue(temp, item.Value);
+            Console.WriteLine(temp.assets + "    heellloooooowdgui");
           }
-          Console.WriteLine(output);
+          lRiot.Add(temp);
         }
-        dataReader.Close();
-        command.Dispose();
-        cnn.Close();
       }
-      catch (Exception ex)
+
+      foreach(Riot i in lRiot)
       {
-        Console.WriteLine("Can not open connection ! ");
+        Console.WriteLine(i);
       }
 
     }
