@@ -14,40 +14,26 @@ namespace Tests
   {
     static void Main(string[] args)
     {
-      Dictionary<string, string> D = new Dictionary<string, string> { { "assets", "Hello" }, { "employees", "World" } };
-
-      List<Riot> lRiot = new List<Riot>();
-      Riot shit = new Riot();
-
-      shit.assets = "hbfgigbb";
-      shit.employees = "hello";
-      Console.WriteLine(shit.assets);
-      Console.WriteLine(D["assets"]);
+      Dictionary<string, string> D = new Dictionary<string, string> { { "assets", "Billion" }, { "employees", "World" },{ "location","California"} };
       PropertyInfo[] properties = typeof(Riot).GetProperties();
 
-      foreach (KeyValuePair<string, string> item in D)
+      Riot temp = new Riot();
+      foreach (PropertyInfo c in properties)
       {
-        Console.WriteLine(1);
-        foreach (PropertyInfo c in properties)
+        string nme = c.Name;
+        if (D.ContainsKey(nme))
         {
-          Riot temp = new Riot();
-          string nme = c.Name;
-          Console.WriteLine(nme + "------------------");
-          if (item.Key == nme)
-          {
-            Console.WriteLine(item.Key + "FOUND YOU COCKSUKE");
-            var tempType = typeof(Riot);
-            tempType.GetProperty(nme).SetValue(temp, item.Value);
-            Console.WriteLine(temp.assets + "    heellloooooowdgui");
-          }
-          lRiot.Add(temp);
+          var tempType = typeof(Riot);
+          tempType.GetProperty(nme).SetValue(temp, D[nme]);
         }
       }
+      Console.WriteLine(temp.assets);
+      Console.WriteLine(temp.employees);
+      Console.WriteLine(temp.location);
 
-      foreach(Riot i in lRiot)
-      {
-        Console.WriteLine(i);
-      }
+
+
+
 
     }
   }

@@ -7,11 +7,12 @@ using Newtonsoft.Json;
 
 namespace Tests
 {
-
+   
   public class Riot
   {
     public string assets { get; set; }
     public string employees { get; set; }
+    public string location { get; set; }
 
     void json()
     {
